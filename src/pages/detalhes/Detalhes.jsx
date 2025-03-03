@@ -16,7 +16,9 @@ function Detalhes() {
   const [showModal, setShowModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [registroEdicao, setRegistroEdicao] = useState(null);
-  const [mesSelecionado, setMesSelecionado] = useState("");
+  const [mesSelecionado, setMesSelecionado] = useState("0");
+  const [refresh, setRefresh] = useState(false);
+
 
 
   function calcularTempoTotal(entradaTimestamp, saidaTimestamp) {
@@ -46,14 +48,10 @@ function Detalhes() {
         const dados = querySnapshot.docs.map(doc => {
             const data = doc.data();
 
-            // Extraindo o mês da data de entrada, se houver data válida
-            const mesEntrada = data.entrada && data.entrada !== "diaria"
-                ? data.entrada.toDate().getMonth()
-                : null;
-
-            // Filtrando os dados com base no mês selecionado
-            if (mesSelecionado !== "" && mesEntrada !== null && mesEntrada !== mesSelecionado) {
-                return null; // Ignora os dados que não correspondem ao mês selecionado
+            const mesEntrada = parseInt(doc.id.split("-")[1]) - 1; // Obtém o mês do id (corrigindo o índice do mês)
+            // Filtrar pelo mês selecionado
+            if (mesSelecionado !== "" && mesEntrada !== Number(mesSelecionado)) {
+              return null;
             }
 
             // Se for "hora", calcular tempo e valor normalmente
@@ -100,11 +98,9 @@ function Detalhes() {
 }
 
 
-
-
   useEffect(() => {
     fetchData();
-  }, [placa, valorHora, mesSelecionado]);
+  }, [placa, valorHora, mesSelecionado, refresh]);
 
   const openModal = () => setShowModal(true);
   const closeModal = () => setShowModal(false);
@@ -169,21 +165,20 @@ const salvarEdicao = async () => {
     <>
       <h1>Detalhes do Caminhão</h1>
       <h2><strong>Placa:</strong> {placa}</h2>
-
-        <select value={mesSelecionado} onChange={(e) => setMesSelecionado(e.target.value)}>
-            <option value="0">Janeiro</option>
-            <option value="1">Fevereiro</option>
-            <option value="marco">Março</option>
-            <option value="diaria">Abril</option>
-            <option value="diaria">Maio</option>
-            <option value="diaria">Junho</option>
-            <option value="diaria">Julho</option>
-            <option value="diaria">Agosto</option>
-            <option value="diaria">Setembro</option>
-            <option value="diaria">Outubro</option>
-            <option value="diaria">Novembro</option>
-            <option value="diaria">Dezembro</option>
-          </select>
+      <select value={mesSelecionado} onChange={(e) => setMesSelecionado(Number(e.target.value))}>
+        <option value="0">Janeiro</option>
+        <option value="1">Fevereiro</option>
+        <option value="2">Março</option>
+        <option value="3">Abril</option>
+        <option value="4">Maio</option>
+        <option value="5">Junho</option>
+        <option value="6">Julho</option>
+        <option value="7">Agosto</option>
+        <option value="8">Setembro</option>
+        <option value="9">Outubro</option>
+        <option value="10">Novembro</option>
+        <option value="11">Dezembro</option>
+    </select>
 
 
       <ul className="tituloTabela">
@@ -228,7 +223,7 @@ const salvarEdicao = async () => {
         <div className="modal">
           <div className="modal-content">
             <button className="close" onClick={closeModal}>X</button>
-            <Adicionar placa={placa} />
+            <Adicionar placa={placa} refresh={setRefresh} />
           </div>
         </div>
       )}

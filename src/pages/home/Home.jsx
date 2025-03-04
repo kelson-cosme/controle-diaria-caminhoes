@@ -6,8 +6,6 @@ import { useState, useEffect } from "react";
 
 import { Link } from "react-router-dom";
 
-import "./home.css"
-
 function Home() {
   const [identificador, setIdentificador] = useState([]);
 

@@ -24,10 +24,11 @@ function Detalhes() {
   function calcularTempoTotal(entradaTimestamp, saidaTimestamp) {
     if (!entradaTimestamp || !saidaTimestamp) return { tempoEmHoras: 0, tempoFormatado: "00:00:00" };
 
-    const entrada = entradaTimestamp.toDate();
-    const saida = saidaTimestamp.toDate();
-    const diferencaMs = saida - entrada;
+    const entrada = entradaTimestamp?.toDate();
+    const saida = saidaTimestamp?.toDate();
+    if (!entrada || !saida) return { tempoEmHoras: 0, tempoFormatado: "00:00:00" };
 
+    const diferencaMs = saida - entrada;
     if (diferencaMs < 0) return { tempoEmHoras: 0, tempoFormatado: "00:00:00" };
 
     const horas = Math.floor(diferencaMs / (1000 * 60 * 60));
@@ -39,41 +40,36 @@ function Detalhes() {
 
     return { tempoEmHoras, tempoFormatado };
   }
-
   async function fetchData() {
     try {
-        const entradasRef = collection(db, "caminhoes", placa, "entradas");
-        const querySnapshot = await getDocs(entradasRef);
+      const entradasRef = collection(db, "caminhoes", placa, "entradas");
+      const querySnapshot = await getDocs(entradasRef);
 
-        const dados = querySnapshot.docs.map(doc => {
-            const data = doc.data();
+      const dados = querySnapshot.docs.map(doc => {
+        const data = doc.data();
+        const mesEntrada = parseInt(doc.id.split("-")[1]) - 1;
+        if (mesSelecionado !== "" && mesEntrada !== Number(mesSelecionado)) return null;
 
-            const mesEntrada = parseInt(doc.id.split("-")[1]) - 1; // Obtém o mês do id (corrigindo o índice do mês)
-            // Filtrar pelo mês selecionado
-            if (mesSelecionado !== "" && mesEntrada !== Number(mesSelecionado)) {
-              return null;
-            }
-
-            // Se for "hora", calcular tempo e valor normalmente
-            if (data.modo === "hora") {
-                const { tempoEmHoras, tempoFormatado } = calcularTempoTotal(data.entrada, data.saida);
-
-                return {
-                    id: doc.id,
-                    operador: data.operador,
-                    entrada: data.entrada,
-                    saida: data.saida,
-                    entradaFormatada: data.entrada?.toDate().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }) || "",
-                    saidaFormatada: data.saida?.toDate().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }) || "",
-                    tempoTotalFormatado: tempoFormatado,
-                    tempoTotalEmHoras: tempoEmHoras,
-                    valorHora: data.valorHora,
-                    valorTotal: tempoEmHoras * data.valorHora, // Cálculo apenas para modo "hora"
-                    modo: "hora"
-                };
-            }
-
-            // Se for "diaria", apenas exibir os valores fixos, sem cálculo de tempo
+          if (data.modo === "hora") {
+            const entradaTimestamp = data.entrada ? Timestamp.fromDate(new Date(`1970-01-01T${data.entrada}:00`)) : null;
+            const saidaTimestamp = data.saida ? Timestamp.fromDate(new Date(`1970-01-01T${data.saida}:00`)) : null;
+            const { tempoEmHoras, tempoFormatado } = calcularTempoTotal(entradaTimestamp, saidaTimestamp);
+    
+            return {
+              id: doc.id,
+              operador: data.operador,
+              entrada: data.entrada,
+              saida: data.saida,
+              entradaFormatada: data.entrada || "",
+              saidaFormatada: data.saida || "",
+              tempoTotalFormatado: tempoFormatado,
+              tempoTotalEmHoras: tempoEmHoras,
+              valorHora: data.valor,
+              valorTotal: tempoEmHoras * data.valor,
+              modo: "hora"
+            };
+          }
+          // Se for "diaria", apenas exibir os valores fixos, sem cálculo de tempo
             return {
                 id: doc.id,
                 operador: data.operador,
@@ -87,16 +83,17 @@ function Detalhes() {
                 modo: "diaria",
                 valorHora: data.valor
             };
-        }).filter(dado => dado !== null); // Remove registros ignorados
 
-        setDetalhes(dados);
+
+      }).filter(dado => dado !== null);
+
+      setDetalhes(dados);
     } catch (error) {
-        console.error("Erro ao buscar os detalhes:", error);
+      console.error("Erro ao buscar os detalhes:", error);
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
-}
-
+  }
 
   useEffect(() => {
     fetchData();
@@ -129,15 +126,16 @@ const salvarEdicao = async () => {
         } else {
             // Se for "hora", permite editar todos os campos
             await updateDoc(docRef, {
-                operador: registroEdicao.operador,
-                entrada: Timestamp.fromDate(new Date(`1970-01-01T${registroEdicao.entradaFormatada}:00`)), 
-                saida: Timestamp.fromDate(new Date(`1970-01-01T${registroEdicao.saidaFormatada}:00`)),
-                valorHora: registroEdicao.valorHora
-              });
+              operador: registroEdicao.operador,
+              entrada: registroEdicao.entradaFormatada, // Apenas "HH:mm"
+              saida: registroEdicao.saidaFormatada,     // Apenas "HH:mm"
+              valor: registroEdicao.valorHora
+            });
         }
 
         fecharModalEdicao();
         fetchData(); // Atualiza os dados após edição
+        alert("Dados alterados com sucesso")
     } catch (error) {
         console.error("Erro ao editar o registro:", error);
     }

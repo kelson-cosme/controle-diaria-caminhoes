@@ -294,6 +294,16 @@ const salvarEdicao = async () => {
         ) : (
           // Apenas exibe o campo de valor para modo "diária"
           <div>
+
+            <div>
+              <label>Operador:</label>
+              <input 
+                type="text" 
+                value={registroEdicao.operador} 
+                onChange={(e) => setRegistroEdicao({ ...registroEdicao, operador: e.target.value })} 
+              />
+            </div>
+
             <label>Valor da Diária:</label>
             <input 
               type="number" 

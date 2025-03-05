@@ -66,7 +66,9 @@ function Detalhes() {
               tempoTotalEmHoras: tempoEmHoras,
               valorHora: data.valor,
               valorTotal: tempoEmHoras * data.valor,
-              modo: "hora"
+              modo: "hora",
+              pagamento: data.pagamento
+
             };
           }
           // Se for "diaria", apenas exibir os valores fixos, sem cálculo de tempo
@@ -81,12 +83,13 @@ function Detalhes() {
                 tempoTotalEmHoras: 0, 
                 valorTotal: parseFloat(data.valor) || 0, // Pega o valor fixo do Firebase
                 modo: "diaria",
-                valorHora: data.valor
+                valorHora: data.valor,
+                pagamento: data.pagamento
             };
 
 
       }).filter(dado => dado !== null);
-
+      console.log(dados)
       setDetalhes(dados);
     } catch (error) {
       console.error("Erro ao buscar os detalhes:", error);
@@ -121,7 +124,10 @@ const salvarEdicao = async () => {
         // Se for "diária", só permite atualizar o valor
         if (registroEdicao.modo === "diaria") {
             await updateDoc(docRef, {
-                valor: registroEdicao.valorTotal.toString() // Salva como string para evitar erro
+                operador: registroEdicao.operador,
+                valor: registroEdicao.valorTotal.toString(), // Salva como string para evitar erro
+                pagamento: registroEdicao.pagamento
+
             });
         } else {
             // Se for "hora", permite editar todos os campos
@@ -129,7 +135,8 @@ const salvarEdicao = async () => {
               operador: registroEdicao.operador,
               entrada: registroEdicao.entradaFormatada, // Apenas "HH:mm"
               saida: registroEdicao.saidaFormatada,     // Apenas "HH:mm"
-              valor: registroEdicao.valorHora
+              valor: registroEdicao.valorHora,
+              pagamento: registroEdicao.pagamento
             });
         }
 
@@ -197,7 +204,10 @@ const salvarEdicao = async () => {
         <div className="dadosEntradas">
           <ul>
             {detalhes.map((entrada) => (
-              <li key={entrada.id}>
+              <li style={{ background: entrada.pagamento ? "#d5fac4" : "#8bae7c", 
+                          color: entrada.pagamento ? "black" : "#9b0803"
+                        }}
+                        key={entrada.id}>
                 <p>{entrada.id}</p>
                 <p>{entrada.operador}</p>
                 <p>{entrada.entradaFormatada}</p>
@@ -270,6 +280,16 @@ const salvarEdicao = async () => {
                 onChange={(e) => setRegistroEdicao({ ...registroEdicao, valorHora: e.target.value })} 
               />
             </div>
+
+            <div>
+              <label>Pago: </label>
+              <select value={registroEdicao.pagamento} name="" id="" 
+                onChange={(e) => setRegistroEdicao({...registroEdicao, pagamento: e.target.value === "true"})}
+              >
+                <option value="true">Sim</option>
+                <option value="false">Não</option>
+              </select>
+            </div>
           </>
         ) : (
           // Apenas exibe o campo de valor para modo "diária"
@@ -280,7 +300,20 @@ const salvarEdicao = async () => {
               value={registroEdicao.valorTotal} 
               onChange={(e) => setRegistroEdicao({ ...registroEdicao, valorTotal: e.target.value })} 
             />
+
+            <div>
+              <label>Pago: </label>
+              <select value={registroEdicao.pagamento} name="" id="" 
+                onChange={(e) => setRegistroEdicao({...registroEdicao, pagamento: e.target.value === "true"})}
+              >
+                <option value={true}>Sim</option>
+                <option value={false}>Não</option>
+              </select>
+            </div>
+
           </div>
+
+
         )}
       </form>
 

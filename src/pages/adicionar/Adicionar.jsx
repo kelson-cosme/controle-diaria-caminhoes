@@ -12,6 +12,7 @@ function Adicionar({ placa, refresh }) {
   const [valorHora, setValorHora] = useState("");
   const [valorDiaria, setValorDiaria] = useState("");
   const [loading, setLoading] = useState(false); // Estado para loading
+  const [pagamento, setPagamento] = useState(true)
 
   const formatarIDData = (dataEscolhida) => {
     const [ano, mes, dia] = dataEscolhida.split("-");
@@ -45,6 +46,7 @@ function Adicionar({ placa, refresh }) {
         saida: modo === "hora" ? saida : "diaria",
         valor: modo === "hora" ? valorHora : valorDiaria,
         modo,
+        pagamento: modo === "hora" ? pagamento : pagamento,
       });
 
       alert("Dados adicionados com sucesso!");
@@ -140,6 +142,16 @@ function Adicionar({ placa, refresh }) {
             />
           </div>
         )}
+
+            <div>
+              <label>Pago: </label> <br />
+              <select value={pagamento} 
+                onChange={(e) => setPagamento(e.target.value === "true")}
+              >
+                <option value={true}>Sim</option>
+                <option value={false}>Não</option>
+              </select>
+            </div>  
 
         <button type="submit" disabled={loading}>
           {loading ? "Aguarde..." : "Adicionar"}

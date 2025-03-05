@@ -8,6 +8,8 @@ import Editar from "../../assets/editar.png";
 import Excluir from "../../assets/excluir.png";
 import "./detalhes.css";
 
+import ChartOverview from "@/components/chart";
+
 function Detalhes() {
   const { placa } = useParams();
   const [detalhes, setDetalhes] = useState([]);
@@ -331,6 +333,8 @@ const salvarEdicao = async () => {
     </div>
   </div>
 )}
+    <ChartOverview/>
+
     </>
   );
 }

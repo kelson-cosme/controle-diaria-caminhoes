@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route} from 'react-router-dom'
-import Home from "../../pages/home/Home.jsx"
-import Detalhes from '../../pages/detalhes/Detalhes.jsx'
-import Adicionar from '../../pages/adicionar/Adicionar.jsx'
+import Home from "../../pages/home/Home.tsx"
+import Detalhes from '../../pages/detalhes/Detalhes.tsx'
+import Adicionar from '../../pages/adicionar/Adicionar.tsx'
 
 
 function Rotas(){

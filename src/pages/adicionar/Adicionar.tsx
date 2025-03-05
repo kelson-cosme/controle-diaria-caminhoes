@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { db } from "../../componets/firebaseConfig/firebaseConfig";
+import { db } from "../../componets/firebaseConfig/firebaseConfig.ts";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import "./Adicionar.css";
 

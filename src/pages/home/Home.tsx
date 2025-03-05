@@ -1,27 +1,23 @@
 import "./Home.css";
-import { db } from "../../componets/firebaseConfig/firebaseConfig";
+import { db } from "../../componets/firebaseConfig/firebaseConfig.ts";
 import { collection, getDocs } from "firebase/firestore";
-
 import { useState, useEffect } from "react";
-
 import { Link } from "react-router-dom";
 
 function Home() {
-  const [identificador, setIdentificador] = useState([]);
+  const [identificador, setIdentificador] = useState<string[]>([]);
 
   async function getData() {
     const querySnapshot = await getDocs(collection(db, "caminhoes"));
-
-    const placasArray = [];
+    
+    const placasArray: string[] = [];
     querySnapshot.forEach((doc) => {
-      console.log(doc.id, doc.data());
       placasArray.push(doc.id);
     });
 
-    setIdentificador(placasArray); // Atualiza o estado com todas as placas de uma vez
+    setIdentificador(placasArray);
   }
 
-  // Executar apenas uma vez quando o componente for montado
   useEffect(() => {
     getData();
   }, []);
@@ -31,7 +27,9 @@ function Home() {
       <h1>Altma - Industrial</h1>
       <ul>
         {identificador.map((placa, index) => (
-          <li key={index}> <Link to={`/${placa}`}> {placa}</Link></li>
+          <li key={index}>
+            <Link to={`/${placa}`}>{placa}</Link>
+          </li>
         ))}
       </ul>
     </>

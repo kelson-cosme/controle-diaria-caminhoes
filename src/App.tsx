@@ -1,5 +1,7 @@
 import Rotas from "./componets/rotas/Rotas"
 
+import "./App.css"
+
 function App() {
 
   return (

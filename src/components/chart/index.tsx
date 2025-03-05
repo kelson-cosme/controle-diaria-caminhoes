@@ -57,17 +57,31 @@ function ChartOverview() {
                     "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
                 ];
     
-                // Organizar os dados por mês
+                // Organizar os dados por mês e calcular a somatória
                 const dadosPorMes = dados.reduce((acc, item) => {
                     const data = item.id.split("-"); // Assumindo formato dd-mm-yy
                     const mes = meses[parseInt(data[1], 10) - 1]; // Converter o número do mês para o nome
     
                     const mesAno = `${mes}`; // Formato "Mês de Ano" (ex: "Março de 2025")
     
+                    // Inicializa o objeto de agrupamento, se necessário
                     if (!acc[mesAno]) {
-                        acc[mesAno] = [];
+                        acc[mesAno] = {
+                            dados: [],
+                            pagamentoTrue: 0, // Somatória para pagamento verdadeiro
+                            pagamentoFalse: 0, // Somatória para pagamento falso
+                        };
                     }
-                    acc[mesAno].push(item); // Adiciona o item ao mês correspondente
+    
+                    // Adiciona o item ao mês correspondente
+                    acc[mesAno].dados.push(item);
+    
+                    // Verifica se o pagamento foi realizado e soma os valores
+                    if (item.pagamento === true) {
+                        acc[mesAno].pagamentoTrue += parseFloat(item.valor); // Adiciona o valor ao total de pagamento true
+                    } else if (item.pagamento === false) {
+                        acc[mesAno].pagamentoFalse += parseFloat(item.valor); // Adiciona o valor ao total de pagamento false
+                    }
     
                     return acc;
                 }, {});
@@ -83,6 +97,7 @@ function ChartOverview() {
             fetchData();
         }
     }, [placa]);
+    
     
     
     

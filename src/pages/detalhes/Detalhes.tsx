@@ -175,20 +175,27 @@ const salvarEdicao = async () => {
     <div className="corpoDetalhes">
       <h1 className=" font-bold text-2xl">Detalhes do Caminhão</h1>
       <h2><strong>Placa:</strong> {placa}</h2>
-      <select value={mesSelecionado} onChange={(e) => setMesSelecionado(Number(e.target.value))}>
-        <option value="0">Janeiro</option>
-        <option value="1">Fevereiro</option>
-        <option value="2">Março</option>
-        <option value="3">Abril</option>
-        <option value="4">Maio</option>
-        <option value="5">Junho</option>
-        <option value="6">Julho</option>
-        <option value="7">Agosto</option>
-        <option value="8">Setembro</option>
-        <option value="9">Outubro</option>
-        <option value="10">Novembro</option>
-        <option value="11">Dezembro</option>
-    </select>
+
+      <div className="flex">
+        <h2 className="">Escolha o Mês: </h2>
+
+        <select className="border-2 border-cyan-400" value={mesSelecionado} onChange={(e) => setMesSelecionado(Number(e.target.value))}>
+          <option value="0">Janeiro</option>
+          <option value="1">Fevereiro</option>
+          <option value="2">Março</option>
+          <option value="3">Abril</option>
+          <option value="4">Maio</option>
+          <option value="5">Junho</option>
+          <option value="6">Julho</option>
+          <option value="7">Agosto</option>
+          <option value="8">Setembro</option>
+          <option value="9">Outubro</option>
+          <option value="10">Novembro</option>
+          <option value="11">Dezembro</option>
+      </select>
+      </div>
+      
+     
 
       <ul className="tituloTabela">
         <li><h3>Data</h3></li>
@@ -227,7 +234,7 @@ const salvarEdicao = async () => {
         <p>Nenhuma entrada registrada.</p>
       )}
 
-      <button onClick={openModal}>Adicionar Registro</button>
+      <button className="modalAdicionar" onClick={openModal}>Adicionar Registro</button>
 
       {showModal && (
         <div className="modal">

@@ -163,10 +163,7 @@ function ChartOverview() {
     
     return (
         <div className="w-full flex justify-center items-center ">
-
-            {dadosGraficos && console.log(dadosGraficos.abril.pagamentoTrue)}
-
-            <ChartContainer config={chartConfig} className="sm:w-1/2 max-h-[400px] w-full ">
+            <ChartContainer config={chartConfig} className="sm:w-[90%] max-h-[400px] w-full ">
                 <BarChart accessibilityLayer data={chartData}>
                     <CartesianGrid vertical={false} />
                     <XAxis
@@ -177,8 +174,8 @@ function ChartOverview() {
                         tickFormatter={(value) => value.slice(0, 3)} //letra
                     />
                     <ChartTooltip content={<ChartTooltipContent />} />
-                    <Bar dataKey="pago" fill="var(--color-desktop)" radius={4} />
-                    <Bar dataKey="naoPago" fill="var(--color-mobile)" radius={4} />
+                    <Bar dataKey="pago" fill="var(--color-desktop)" radius={2}/>
+                    <Bar dataKey="naoPago" fill="var(--color-mobile)" radius={2} />
                 </BarChart>
             </ChartContainer>
         </div>

@@ -213,8 +213,8 @@ const salvarEdicao = async () => {
         <div className="dadosEntradas">
           <ul>
             {detalhes.map((entrada) => (
-              <li onClick={() => abrirModalEdicao(entrada)} style={{ background: entrada.pagamento ? "#d5fac4" : "#8bae7c", 
-                          color: entrada.pagamento ? "black" : "#9b0803"
+              <li onClick={() => abrirModalEdicao(entrada)} style={{ background: entrada.pagamento ? "#d5fac4" : "#fa504d", 
+                          color: entrada.pagamento ? "black" : "black"
                         }}
                         key={entrada.id}>
                 <p>{entrada.id}</p>

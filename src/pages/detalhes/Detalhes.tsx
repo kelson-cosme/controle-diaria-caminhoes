@@ -162,6 +162,7 @@ const salvarEdicao = async () => {
         const docRef = doc(db, "caminhoes", placa, "entradas", id);
         await deleteDoc(docRef);
         alert(`Registro com ID: ${id} excluído com sucesso!`);
+        fecharModalEdicao();
         setDetalhes(detalhes.filter((entrada) => entrada.id !== id));
       } catch (error) {
         console.error("Erro ao excluir o registro:", error);
@@ -179,7 +180,7 @@ const salvarEdicao = async () => {
       <div className="flex">
         <h2 className="">Escolha o Mês: </h2>
 
-        <select className="border-2 border-cyan-400" value={mesSelecionado} onChange={(e) => setMesSelecionado(Number(e.target.value))}>
+        <select className="border-3 border-cyan-#919d7f rounded-sm" value={mesSelecionado} onChange={(e) => setMesSelecionado(Number(e.target.value))}>
           <option value="0">Janeiro</option>
           <option value="1">Fevereiro</option>
           <option value="2">Março</option>
@@ -205,9 +206,6 @@ const salvarEdicao = async () => {
         <li><h3>Tempo Total</h3></li>
         <li><h3>Valor H/diaria</h3></li>
         <li><h3>Total</h3></li>
-        <li style={{width: "30px"}}></li>
-        <li style={{width: "30px"}}></li>
-
       </ul>
       {loading ? (
         <p>Carregando...</p>
@@ -299,6 +297,9 @@ const salvarEdicao = async () => {
                     <option value="false">Não</option>
                   </select>
                 </div>
+
+                <img style={{cursor:"pointer", margin:"5px"}} width={"20px"} height={"20px"} src={Excluir} alt="Excluir" onClick={() => excluirRegistro(registroEdicao.id)} />
+
               </>
             ) : (
               // Apenas exibe o campo de valor para modo "diária"

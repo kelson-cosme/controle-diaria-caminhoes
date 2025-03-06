@@ -43,6 +43,8 @@ function Detalhes() {
     return { tempoEmHoras, tempoFormatado };
   }
   async function fetchData() {
+    setLoading(true)
+    
     try {
       const entradasRef = collection(db, "caminhoes", placa, "entradas");
       const querySnapshot = await getDocs(entradasRef);
@@ -50,7 +52,8 @@ function Detalhes() {
       const dados = querySnapshot.docs.map(doc => {
         const data = doc.data();
         const mesEntrada = parseInt(doc.id.split("-")[1]) - 1;
-        if (mesSelecionado !== "" && mesEntrada !== Number(mesSelecionado)) return null;
+        if (mesSelecionado !== "" && mesEntrada !== Number(mesSelecionado))
+          return null ;
 
           if (data.modo === "hora") {
             const entradaTimestamp = data.entrada ? Timestamp.fromDate(new Date(`1970-01-01T${data.entrada}:00`)) : null;
@@ -91,7 +94,7 @@ function Detalhes() {
 
 
       }).filter(dado => dado !== null);
-      console.log(dados)
+      // console.log(dados)
       setDetalhes(dados);
     } catch (error) {
       console.error("Erro ao buscar os detalhes:", error);
@@ -238,101 +241,101 @@ const salvarEdicao = async () => {
         </div>
       )}
 
-{showEditModal && (
-  <div className="modal">
-    <div className="modal-content">
-      <button className="close" onClick={fecharModalEdicao}>X</button>
-      <h2>Editar Registro</h2>
+    {showEditModal && (
+      <div className="modal">
+        <div className="modal-content">
+          <button className="close" onClick={fecharModalEdicao}>X</button>
+          <h2>Editar Registro</h2>
 
-      <form>
-        {registroEdicao.modo === "hora" ? (
-          <>
-            <div>
-              <label>Operador:</label>
-              <input 
-                type="text" 
-                value={registroEdicao.operador} 
-                onChange={(e) => setRegistroEdicao({ ...registroEdicao, operador: e.target.value })} 
-              />
-            </div>
+          <form>
+            {registroEdicao.modo === "hora" ? (
+              <>
+                <div>
+                  <label>Operador:</label>
+                  <input 
+                    type="text" 
+                    value={registroEdicao.operador} 
+                    onChange={(e) => setRegistroEdicao({ ...registroEdicao, operador: e.target.value })} 
+                  />
+                </div>
 
-            <div>
-              <label>Entrada:</label>
-              <input 
-                type="time" 
-                value={registroEdicao.entradaFormatada} 
-                onChange={(e) => setRegistroEdicao({ ...registroEdicao, entradaFormatada: e.target.value })} 
-              />
-            </div>
+                <div>
+                  <label>Entrada:</label>
+                  <input 
+                    type="time" 
+                    value={registroEdicao.entradaFormatada} 
+                    onChange={(e) => setRegistroEdicao({ ...registroEdicao, entradaFormatada: e.target.value })} 
+                  />
+                </div>
 
-            <div>
-              <label>Saída:</label>
-              <input 
-                type="time" 
-                value={registroEdicao.saidaFormatada} 
-                onChange={(e) => setRegistroEdicao({ ...registroEdicao, saidaFormatada: e.target.value })} 
-              />
-            </div>
+                <div>
+                  <label>Saída:</label>
+                  <input 
+                    type="time" 
+                    value={registroEdicao.saidaFormatada} 
+                    onChange={(e) => setRegistroEdicao({ ...registroEdicao, saidaFormatada: e.target.value })} 
+                  />
+                </div>
 
-            <div>
-              <label>Valor Hora:</label>
-              <input 
-                type="number" 
-                value={registroEdicao.valorHora} 
-                onChange={(e) => setRegistroEdicao({ ...registroEdicao, valorHora: e.target.value })} 
-              />
-            </div>
+                <div>
+                  <label>Valor Hora:</label>
+                  <input 
+                    type="number" 
+                    value={registroEdicao.valorHora} 
+                    onChange={(e) => setRegistroEdicao({ ...registroEdicao, valorHora: e.target.value })} 
+                  />
+                </div>
 
-            <div>
-              <label>Pago: </label>
-              <select value={registroEdicao.pagamento} name="" id="" 
-                onChange={(e) => setRegistroEdicao({...registroEdicao, pagamento: e.target.value === "true"})}
-              >
-                <option value="true">Sim</option>
-                <option value="false">Não</option>
-              </select>
-            </div>
-          </>
-        ) : (
-          // Apenas exibe o campo de valor para modo "diária"
-          <div>
+                <div>
+                  <label>Pago: </label>
+                  <select value={registroEdicao.pagamento} name="" id="" 
+                    onChange={(e) => setRegistroEdicao({...registroEdicao, pagamento: e.target.value === "true"})}
+                  >
+                    <option value="true">Sim</option>
+                    <option value="false">Não</option>
+                  </select>
+                </div>
+              </>
+            ) : (
+              // Apenas exibe o campo de valor para modo "diária"
+              <div>
 
-            <div>
-              <label>Operador:</label>
-              <input 
-                type="text" 
-                value={registroEdicao.operador} 
-                onChange={(e) => setRegistroEdicao({ ...registroEdicao, operador: e.target.value })} 
-              />
-            </div>
+                <div>
+                  <label>Operador:</label>
+                  <input 
+                    type="text" 
+                    value={registroEdicao.operador} 
+                    onChange={(e) => setRegistroEdicao({ ...registroEdicao, operador: e.target.value })} 
+                  />
+                </div>
 
-            <label>Valor da Diária:</label>
-            <input 
-              type="number" 
-              value={registroEdicao.valorTotal} 
-              onChange={(e) => setRegistroEdicao({ ...registroEdicao, valorTotal: e.target.value })} 
-            />
+                <label>Valor da Diária:</label>
+                <input 
+                  type="number" 
+                  value={registroEdicao.valorTotal} 
+                  onChange={(e) => setRegistroEdicao({ ...registroEdicao, valorTotal: e.target.value })} 
+                />
 
-            <div>
-              <label>Pago: </label>
-              <select value={registroEdicao.pagamento} name="" id="" 
-                onChange={(e) => setRegistroEdicao({...registroEdicao, pagamento: e.target.value === "true"})}
-              >
-                <option value={true}>Sim</option>
-                <option value={false}>Não</option>
-              </select>
-            </div>
+                <div>
+                  <label>Pago: </label>
+                  <select value={registroEdicao.pagamento} name="" id="" 
+                    onChange={(e) => setRegistroEdicao({...registroEdicao, pagamento: e.target.value === "true"})}
+                  >
+                    <option value={true}>Sim</option>
+                    <option value={false}>Não</option>
+                  </select>
+                </div>
 
-          </div>
+              </div>
 
 
-        )}
-      </form>
+            )}
+          </form>
 
-      <button onClick={salvarEdicao}>Salvar</button>
-    </div>
-  </div>
-)}
+          <button onClick={salvarEdicao}>Salvar</button>
+        </div>
+      </div>
+    )}
     <ChartOverview/>
 
     </>

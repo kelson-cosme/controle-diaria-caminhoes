@@ -3,7 +3,7 @@ import { db } from "../../componets/firebaseConfig/firebaseConfig.ts";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import "./Adicionar.css";
 
-function Adicionar({ placa, refresh }) {
+function Adicionar({ placa, close, refresh }) {
   const [operador, setOperador] = useState("");
   const [entrada, setEntrada] = useState("");
   const [saida, setSaida] = useState("");
@@ -51,6 +51,7 @@ function Adicionar({ placa, refresh }) {
 
       alert("Dados adicionados com sucesso!");
       refresh((prev) => !prev);
+      close(false)
       setOperador("");
       setEntrada("");
       setSaida("");

@@ -155,8 +155,8 @@ const salvarEdicao = async () => {
 
   const excluirRegistro = async (id) => {
     // Exibe uma caixa de confirmação antes de excluir
-    const confirmacao = window.confirm("Tem certeza que deseja excluir este registro?");
-  
+    const confirmacao = window.confirm(`Tem certeza que quer excluir o registro do dia: ${id}`);
+
     if (confirmacao) {
       try {
         const docRef = doc(db, "caminhoes", placa, "entradas", id);
@@ -172,8 +172,8 @@ const salvarEdicao = async () => {
   };
 
   return (
-    <>
-      <h1>Detalhes do Caminhão</h1>
+    <div className="corpoDetalhes">
+      <h1 className=" font-bold text-2xl">Detalhes do Caminhão</h1>
       <h2><strong>Placa:</strong> {placa}</h2>
       <select value={mesSelecionado} onChange={(e) => setMesSelecionado(Number(e.target.value))}>
         <option value="0">Janeiro</option>
@@ -189,7 +189,6 @@ const salvarEdicao = async () => {
         <option value="10">Novembro</option>
         <option value="11">Dezembro</option>
     </select>
-
 
       <ul className="tituloTabela">
         <li><h3>Data</h3></li>
@@ -209,7 +208,7 @@ const salvarEdicao = async () => {
         <div className="dadosEntradas">
           <ul>
             {detalhes.map((entrada) => (
-              <li style={{ background: entrada.pagamento ? "#d5fac4" : "#8bae7c", 
+              <li onClick={() => abrirModalEdicao(entrada)} style={{ background: entrada.pagamento ? "#d5fac4" : "#8bae7c", 
                           color: entrada.pagamento ? "black" : "#9b0803"
                         }}
                         key={entrada.id}>
@@ -220,8 +219,6 @@ const salvarEdicao = async () => {
                 <p>{entrada.tempoTotalFormatado}</p>
                 <p>R$ {entrada.valorHora}</p>
                 <p>R$ {entrada.valorTotal.toFixed(2)}</p>
-                <img style={{cursor:"pointer", margin:"5px"}} width={"20px"} height={"20px"} src={Editar} alt="Editar" onClick={() => abrirModalEdicao(entrada)} />
-                <img style={{cursor:"pointer", margin:"5px"}} width={"20px"} height={"20px"} src={Excluir} alt="Excluir" onClick={() => excluirRegistro(entrada.id)} />
               </li>
             ))}
           </ul>
@@ -236,7 +233,7 @@ const salvarEdicao = async () => {
         <div className="modal">
           <div className="modal-content">
             <button className="close" onClick={closeModal}>X</button>
-            <Adicionar placa={placa} refresh={setRefresh} />
+            <Adicionar placa={placa} close={setShowModal} refresh={setRefresh} />
           </div>
         </div>
       )}
@@ -325,7 +322,7 @@ const salvarEdicao = async () => {
                     <option value={false}>Não</option>
                   </select>
                 </div>
-
+                <img style={{cursor:"pointer", margin:"5px"}} width={"20px"} height={"20px"} src={Excluir} alt="Excluir" onClick={() => console.log(excluirRegistro(registroEdicao.id))} />
               </div>
 
 
@@ -338,7 +335,7 @@ const salvarEdicao = async () => {
     )}
     <ChartOverview/>
 
-    </>
+    </div>
   );
 }
 

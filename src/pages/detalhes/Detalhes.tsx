@@ -7,6 +7,7 @@ import Adicionar from "../adicionar/Adicionar";
 import Editar from "../../assets/editar.png";
 import Excluir from "../../assets/excluir.png";
 import "./detalhes.css";
+import Voltar from "../../assets/voltar.png"
 
 import ChartOverview from "@/components/chart";
 
@@ -174,6 +175,10 @@ const salvarEdicao = async () => {
 
   return (
     <div className="corpoDetalhes">
+
+      <a href="/"><img width={"30"} src={Voltar} alt="" /></a>
+
+
       <h1 className="detalhesCaminhao font-bold text-2xl">Detalhes do Caminhão</h1>
       <h2 className="placa"><strong>Placa:</strong> {placa}</h2>
 

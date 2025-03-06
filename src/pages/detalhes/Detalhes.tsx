@@ -303,7 +303,7 @@ const salvarEdicao = async () => {
                   </select>
                 </div>
 
-                <img style={{cursor:"pointer", margin:"5px"}} width={"20px"} height={"20px"} src={Excluir} alt="Excluir" onClick={() => excluirRegistro(registroEdicao.id)} />
+                <div className="botaoExcluir"><p onClick={() => excluirRegistro(registroEdicao.id)}>Excluir</p></div>
 
               </>
             ) : (
@@ -335,7 +335,8 @@ const salvarEdicao = async () => {
                     <option value={false}>Não</option>
                   </select>
                 </div>
-                <img style={{cursor:"pointer", margin:"5px"}} width={"20px"} height={"20px"} src={Excluir} alt="Excluir" onClick={() => console.log(excluirRegistro(registroEdicao.id))} />
+
+                <div className="botaoExcluir"><p onClick={() => excluirRegistro(registroEdicao.id)}>Excluir</p></div>
               </div>
 
 

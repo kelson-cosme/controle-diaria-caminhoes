@@ -86,8 +86,19 @@
     padding: 0;
     margin: 0;
   }
+  .botaoExcluir{
+    text-align: center;
+  }
+  .botaoExcluir p{
+    background-color: red;
+    display: inline-block;
+    padding: 5px 20px;
+    color: #ffff;
+    border-radius: 5px;
+    margin: auto;
+  }
   
-.modalAdicionar{
+  .modalAdicionar{
     margin-bottom: 50px;
 }
 .placa{

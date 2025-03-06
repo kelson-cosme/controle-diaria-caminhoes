@@ -1,6 +1,7 @@
 
 .corpoDetalhes{
     padding: 2rem;
+    color: rgb(37, 37, 37);
 }
 .tituloTabela{
     list-style-type: none;
@@ -88,6 +89,20 @@
   
 .modalAdicionar{
     margin-bottom: 50px;
+}
+.placa{
+    font-size: 3vh;
+}
+.mes{
+    font-size: 3vh;
+}
+.selecionar{
+    font-size: 3vh;
+    margin-bottom: 10px;
+}
+.detalhesCaminhao{
+    color: rgb(37, 37, 37);
+    margin: 15px 0;
 }
   @media screen and (max-width: 767px){
     

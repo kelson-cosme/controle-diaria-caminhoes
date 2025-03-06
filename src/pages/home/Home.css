@@ -17,3 +17,44 @@ h1{
     /* max-width: 1366px; */
     /* margin: auto; */
 }
+.placas{
+    padding: 2em;
+    margin: auto;
+    width: 70%;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+.placas li{
+    width: 100%;
+    height: auto;
+}
+.placas a{
+    display: block;
+    padding: 12px 16px;
+  border-bottom: 1px solid #ddd;
+  font-size: 1em;
+  color: #333;
+  transition: background 0.5s ease-in-out, color 0.5s ease-in-out;
+}
+.placas a:hover{
+    background: #055d02;
+    border-radius: 7px;
+    color: white;
+    cursor: pointer;
+}
+.placas li:last-child a {
+    border-bottom: none; /* Remove a borda do último item */
+}
+.logo{
+    margin: auto;
+    width: 50vh;
+}
+@media screen and (max-width: 767px){
+    
+    .placas{
+        width: 95%;
+    }
+  }

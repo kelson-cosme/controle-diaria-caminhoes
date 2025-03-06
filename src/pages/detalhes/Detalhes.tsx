@@ -174,13 +174,13 @@ const salvarEdicao = async () => {
 
   return (
     <div className="corpoDetalhes">
-      <h1 className=" font-bold text-2xl">Detalhes do Caminhão</h1>
-      <h2><strong>Placa:</strong> {placa}</h2>
+      <h1 className="detalhesCaminhao font-bold text-2xl">Detalhes do Caminhão</h1>
+      <h2 className="placa"><strong>Placa:</strong> {placa}</h2>
 
       <div className="flex">
-        <h2 className="">Escolha o Mês: </h2>
+        <h2 className="mes"> <strong> Escolha o Mês: </strong></h2>
 
-        <select className="border-3 border-cyan-#919d7f rounded-sm" value={mesSelecionado} onChange={(e) => setMesSelecionado(Number(e.target.value))}>
+        <select className="selecionar border-3 border-cyan-#919d7f rounded-sm" value={mesSelecionado} onChange={(e) => setMesSelecionado(Number(e.target.value))}>
           <option value="0">Janeiro</option>
           <option value="1">Fevereiro</option>
           <option value="2">Março</option>
@@ -214,7 +214,7 @@ const salvarEdicao = async () => {
           <ul>
             {detalhes.map((entrada) => (
               <li onClick={() => abrirModalEdicao(entrada)} style={{ background: entrada.pagamento ? "#d5fac4" : "#fa504d", 
-                          color: entrada.pagamento ? "black" : "black"
+                          color: entrada.pagamento ? "black" : "#ffff"
                         }}
                         key={entrada.id}>
                 <p>{entrada.id}</p>

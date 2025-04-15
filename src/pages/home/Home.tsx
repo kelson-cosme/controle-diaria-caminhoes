@@ -25,7 +25,7 @@ function Home() {
 
   return (
     <>
-      <img  className="logo" src={Logo} alt="" />
+    <h1 style={{fontSize: "40px", margin: "15px"}}>Selecione a Placa do Automóvel</h1>
       <ul className="placas">
         {identificador.map((placa, index) => (
           <li key={index}>
